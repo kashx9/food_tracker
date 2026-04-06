@@ -103,7 +103,7 @@ function EmailForm({ buttonLabel, successMsg }) {
 
     setLoading(true);
 
-    await fetch("https://formspree.io/f/xyzabc123", {  // 👈 paste your URL here
+    await fetch("https://formspree.io/f/mdapywqw", {  
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
