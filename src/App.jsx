@@ -46,27 +46,78 @@ const PAINS = [
   "You're bulking or cutting but tracking macros feels like a second job",
 ];
 
-function EmailForm({ inputId, buttonLabel, successMsg }) {
+// function EmailForm({ inputId, buttonLabel, successMsg }) {
+//   const [email, setEmail] = useState("");
+//   const [submitted, setSubmitted] = useState(false);
+//   const [error, setError] = useState(false);
+
+//   function handleSubmit() {
+//     if (email.includes("@")) {
+//       setSubmitted(true);
+//       setEmail("");
+//       setError(false);
+//     } else {
+//       setError(true);
+//       setTimeout(() => setError(false), 800);
+//     }
+//   }
+
+//   return (
+//     <div>
+//       <div style={styles.emailRow}>
+//         <input
+//           id={inputId}
+//           type="email"
+//           placeholder="your@email.com"
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+//           style={{
+//             ...styles.emailInput,
+//             borderColor: error ? "rgba(255,79,79,0.5)" : "rgba(255,255,255,0.15)",
+//           }}
+//         />
+//         <button onClick={handleSubmit} style={styles.emailBtn}>
+//           {buttonLabel}
+//         </button>
+//       </div>
+//       {submitted && (
+//         <p style={styles.successMsg}>{successMsg}</p>
+//       )}
+//     </div>
+//   );
+// }
+
+function EmailForm({ buttonLabel, successMsg }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit() {
-    if (email.includes("@")) {
-      setSubmitted(true);
-      setEmail("");
-      setError(false);
-    } else {
+  async function handleSubmit() {
+    if (!email.includes("@")) {
       setError(true);
       setTimeout(() => setError(false), 800);
+      return;
     }
+
+    setLoading(true);
+
+    await fetch("https://formspree.io/f/xyzabc123", {  // 👈 paste your URL here
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    setLoading(false);
+    setSubmitted(true);
+    setEmail("");
   }
 
   return (
     <div>
       <div style={styles.emailRow}>
         <input
-          id={inputId}
           type="email"
           placeholder="your@email.com"
           value={email}
@@ -78,12 +129,10 @@ function EmailForm({ inputId, buttonLabel, successMsg }) {
           }}
         />
         <button onClick={handleSubmit} style={styles.emailBtn}>
-          {buttonLabel}
+          {loading ? "Sending..." : buttonLabel}
         </button>
       </div>
-      {submitted && (
-        <p style={styles.successMsg}>{successMsg}</p>
-      )}
+      {submitted && <p style={styles.successMsg}>{successMsg}</p>}
     </div>
   );
 }
