@@ -1,4 +1,6 @@
 import { useState } from "react";
+import './App.css';
+import TrackerDashboard from "./TrackerDashboard";
 
 const FOODS = [
   { name: "Paneer (100g)", protein: "18g P" },
@@ -46,48 +48,6 @@ const PAINS = [
   "You're bulking or cutting but tracking macros feels like a second job",
 ];
 
-// function EmailForm({ inputId, buttonLabel, successMsg }) {
-//   const [email, setEmail] = useState("");
-//   const [submitted, setSubmitted] = useState(false);
-//   const [error, setError] = useState(false);
-
-//   function handleSubmit() {
-//     if (email.includes("@")) {
-//       setSubmitted(true);
-//       setEmail("");
-//       setError(false);
-//     } else {
-//       setError(true);
-//       setTimeout(() => setError(false), 800);
-//     }
-//   }
-
-//   return (
-//     <div>
-//       <div style={styles.emailRow}>
-//         <input
-//           id={inputId}
-//           type="email"
-//           placeholder="your@email.com"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-//           style={{
-//             ...styles.emailInput,
-//             borderColor: error ? "rgba(255,79,79,0.5)" : "rgba(255,255,255,0.15)",
-//           }}
-//         />
-//         <button onClick={handleSubmit} style={styles.emailBtn}>
-//           {buttonLabel}
-//         </button>
-//       </div>
-//       {submitted && (
-//         <p style={styles.successMsg}>{successMsg}</p>
-//       )}
-//     </div>
-//   );
-// }
-
 function EmailForm({ buttonLabel, successMsg }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -116,7 +76,7 @@ function EmailForm({ buttonLabel, successMsg }) {
 
   return (
     <div>
-      <div style={styles.emailRow}>
+      <div className="emailRow">
         <input
           type="email"
           placeholder="your@email.com"
@@ -124,126 +84,369 @@ function EmailForm({ buttonLabel, successMsg }) {
           onChange={(e) => setEmail(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           style={{
-            ...styles.emailInput,
             borderColor: error ? "rgba(255,79,79,0.5)" : "rgba(255,255,255,0.15)",
           }}
+          className="emailInput"
         />
-        <button onClick={handleSubmit} style={styles.emailBtn}>
+        <button onClick={handleSubmit} className="emailBtn">
           {loading ? "Sending..." : buttonLabel}
         </button>
       </div>
-      {submitted && <p style={styles.successMsg}>{successMsg}</p>}
+      {submitted && <p className="successMsg">{successMsg}</p>}
     </div>
   );
 }
 
-export default function IndiFitLanding() {
+function HealthCalculator() {
+  const [name, setName] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("male");
+  const [activity, setActivity] = useState("moderate");
+  const [showResults, setShowResults] = useState(false);
+  const [bmi, setBmi] = useState(null);
+  const [calories, setCalories] = useState(null);
+  const [selectedGoal, setSelectedGoal] = useState("maintain");
+
+  function calculateHealth() {
+    if (!height || !weight || !age) return;
+
+    // BMI Calculation
+    const heightM = height / 100;
+    const bmiValue = weight / (heightM * heightM);
+    setBmi(bmiValue.toFixed(1));
+
+    // Harris-Benedict Formula for BMI
+    let bmr;
+    if (gender === "male") {
+      bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+    } else {
+      bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+    }
+
+    // Activity multiplier
+    const multipliers = {
+      sedentary: 1.2,
+      light: 1.375,
+      moderate: 1.55,
+      active: 1.725,
+      veryActive: 1.9,
+    };
+
+    const tdee = bmr * multipliers[activity];
+    setCalories(Math.round(tdee));
+    setShowResults(true);
+  }
+
+  function getHealthStatus(bmiValue) {
+    if (bmiValue < 18.5) return { status: "Underweight", color: "#3b82f6", icon: "⬇️" };
+    if (bmiValue < 25) return { status: "Healthy", color: "#10b981", icon: "✓" };
+    if (bmiValue < 30) return { status: "Overweight", color: "#f59e0b", icon: "⚠️" };
+    return { status: "Obese", color: "#ef4444", icon: "⚠️" };
+  }
+
+  function getGoalCalories() {
+    if (!calories) return {};
+    return {
+      cut: Math.round(calories * 0.8),
+      maintain: calories,
+      bulk: Math.round(calories * 1.2),
+    };
+  }
+
+  const healthStatus = bmi ? getHealthStatus(parseFloat(bmi)) : null;
+  const goalCalories = getGoalCalories();
+
   return (
-    <div style={styles.page}>
-      {/* NAV */}
-      <nav style={styles.nav}>
-        <span style={styles.logo}>INDI.FIT</span>
-        <span style={styles.navBadge}>Early Access</span>
-      </nav>
+    <section style={{ paddingTop: "3rem", paddingBottom: "3rem" }} className="section">
+      <h2 className="sectionHeading">Your Health Profile</h2>
+      <p className="healthSubtitle">
+        Tell us about yourself — we'll calculate your daily calorie needs and health range.
+      </p>
 
-      {/* HERO */}
-      <div style={styles.hero}>
-        <span style={styles.heroTag}>Built for Indian gym goers</span>
-        <h1 style={styles.h1}>
-          Track macros
-          <span style={styles.accent}> without the BS</span>
-        </h1>
-        <p style={styles.heroSub}>
-          MyFitnessPal doesn't know what <strong style={styles.strong}>dal makhani</strong> is.
-          <br />
-          We do. Paneer. Roti. Chicken rice. All in there —{" "}
-          <strong style={styles.strong}>in seconds.</strong>
-        </p>
-        <EmailForm
-          inputId="hero-email"
-          buttonLabel="Get Early Access"
-          successMsg="You're in. We'll ping you when it's live."
-        />
-        <p style={styles.trustLine}>Free to try. No app download needed.</p>
-      </div>
-
-      <div style={styles.divider} />
-
-      {/* PAIN */}
-      <section style={styles.section}>
-        <h2 style={styles.sectionHeading}>Sound familiar?</h2>
-        <ul style={styles.painList}>
-          {PAINS.map((pain, i) => (
-            <li key={i} style={styles.painItem}>
-              <span style={styles.xMark}>✕</span>
-              <span>{pain}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <div style={styles.divider} />
-
-      {/* HOW IT WORKS */}
-      <section style={styles.section}>
-        <h2 style={styles.sectionHeading}>How it works</h2>
-        <div>
-          {STEPS.map((step, i) => (
-            <div
-              key={i}
-              style={{
-                ...styles.step,
-                borderBottom:
-                  i < STEPS.length - 1
-                    ? "0.5px solid rgba(255,255,255,0.06)"
-                    : "none",
-              }}
-            >
-              <div style={styles.stepNum}>{step.num}</div>
-              <div>
-                <h3 style={styles.stepTitle}>{step.title}</h3>
-                <p style={styles.stepDesc}>{step.desc}</p>
-              </div>
-            </div>
-          ))}
+      <div className="healthForm">
+        <div className="formRow">
+          <input
+            type="text"
+            placeholder="Full name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="formInput"
+          />
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            className="formInput"
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
         </div>
-      </section>
 
-      <div style={styles.divider} />
-
-      {/* FOOD CHIPS */}
-      <section style={{ ...styles.section, paddingBottom: "3rem" }}>
-        <h2 style={styles.sectionHeading}>Foods already in there</h2>
-        <div style={styles.chipGrid}>
-          {FOODS.map((food, i) => (
-            <div key={i} style={styles.chip}>
-              {food.name}
-              {food.protein && (
-                <span style={styles.chipMacro}>{food.protein}</span>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA FOOTER */}
-      <div style={styles.ctaFooter}>
-        <h2 style={{ ...styles.sectionHeading, fontSize: "32px", marginBottom: "0.4rem" }}>
-          Want early access?
-        </h2>
-        <p style={styles.ctaSubtext}>
-          Drop your email — we'll let you in first when it's ready.
-        </p>
-        <div style={{ maxWidth: 440, margin: "0 auto" }}>
-          <EmailForm
-            inputId="footer-email"
-            buttonLabel="Notify Me"
-            successMsg="Locked in. You'll hear from us first."
+        <div className="formRow">
+          <input
+            type="number"
+            placeholder="Height (cm)"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            className="formInput"
+          />
+          <input
+            type="number"
+            placeholder="Weight (kg)"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            className="formInput"
+          />
+          <input
+            type="number"
+            placeholder="Age (years)"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            className="formInput"
           />
         </div>
+
+        <div className="formRow">
+          <select
+            value={activity}
+            onChange={(e) => setActivity(e.target.value)}
+            className="formInput"
+          >
+            <option value="sedentary">Sedentary (little activity)</option>
+            <option value="light">Light (1-3 days/week)</option>
+            <option value="moderate">Moderate (3-5 days/week)</option>
+            <option value="active">Active (6-7 days/week)</option>
+            <option value="veryActive">Very Active (2x/day)</option>
+          </select>
+        </div>
+
+        <button onClick={calculateHealth} className="calcBtn">
+          Calculate My Health
+        </button>
       </div>
-    </div>
+
+      {showResults && bmi && (
+        <div className="resultsBox">
+          <div className="resultCard">
+            <h3 className="resultTitle">Your BMI</h3>
+            <div style={{ color: healthStatus.color }} className="resultValue">
+              {bmi}
+            </div>
+            <p className="resultStatus">
+              {healthStatus.icon} {healthStatus.status}
+            </p>
+            <p className="resultHint">Healthy range: 18.5 - 24.9</p>
+          </div>
+
+          <div className="resultCard">
+            <h3 className="resultTitle">Daily Calories</h3>
+            <div className="resultValue">{calories}</div>
+            <p className="resultStatus">Maintenance level</p>
+            <p className="resultHint">Based on your activity level</p>
+          </div>
+        </div>
+      )}
+
+      {showResults && calories && (
+        <div>
+          <h3 className="goalsHeading">Choose Your Goal</h3>
+          <div className="goalsGrid">
+            <div
+              className="goalCard"
+              style={{
+                borderColor:
+                  selectedGoal === "cut"
+                    ? "#3b82f6"
+                    : "rgba(255,255,255,0.1)",
+                background:
+                  selectedGoal === "cut"
+                    ? "rgba(59,130,246,0.1)"
+                    : "rgba(255,255,255,0.03)",
+              }}
+              onClick={() => setSelectedGoal("cut")}
+            >
+              <h4 className="goalTitle">Cut (Lose Weight)</h4>
+              <p className="goalCalories">{goalCalories.cut} cal/day</p>
+              <p className="goalDesc">20% deficit</p>
+            </div>
+
+            <div
+              className="goalCard"
+              style={{
+                borderColor:
+                  selectedGoal === "maintain"
+                    ? "#10b981"
+                    : "rgba(255,255,255,0.1)",
+                background:
+                  selectedGoal === "maintain"
+                    ? "rgba(16,185,129,0.1)"
+                    : "rgba(255,255,255,0.03)",
+              }}
+              onClick={() => setSelectedGoal("maintain")}
+            >
+              <h4 className="goalTitle">Maintain</h4>
+              <p className="goalCalories">{goalCalories.maintain} cal/day</p>
+              <p className="goalDesc">Balanced</p>
+            </div>
+
+            <div
+              className="goalCard"
+              style={{
+                borderColor:
+                  selectedGoal === "bulk"
+                    ? "#f59e0b"
+                    : "rgba(255,255,255,0.1)",
+                background:
+                  selectedGoal === "bulk"
+                    ? "rgba(245,158,11,0.1)"
+                    : "rgba(255,255,255,0.03)",
+              }}
+              onClick={() => setSelectedGoal("bulk")}
+            >
+              <h4 className="goalTitle">Bulk (Gain)</h4>
+              <p className="goalCalories">{goalCalories.bulk} cal/day</p>
+              <p className="goalDesc">20% surplus</p>
+            </div>
+          </div>
+
+          {/* <div className="tipBox">
+            <h3 className="tipTitle">💡 Health Tip</h3>
+            <p className="tipText">
+              {bmi < 18.5
+                ? "You're in the underweight range. Focus on gaining weight gradually with nutrient-dense foods and strength training."
+                : bmi < 25
+                ? "Great! You're in a healthy BMI range. Maintain this with consistent exercise and balanced nutrition."
+                : bmi < 30
+                ? "You're in the overweight range. Consider a moderate calorie deficit with regular exercise to reach a healthier BMI."
+                : "You're in the obese range. Consult with a healthcare provider for personalized guidance on nutrition and fitness."}
+            </p>
+          </div> */}
+          <div className="actionButtons">
+            <button className="actionButton" onClick={() => alert('Enter your target calories functionality - navigate to calorie entry page')}>
+              Enter your target calories
+            </button>
+            <button className="actionButton" onClick={() => alert('Start tracking calories - navigate to tracking page')}>
+              Start tracking calories
+            </button>
+          </div>
+        </div>
+      )}
+    </section>
   );
+}
+
+// export default function IndiFitLanding() {
+//   return (
+//     <div className="page">
+//       {/* NAV */}
+//       <nav className="nav">
+//         <span className="logo">INDI.FIT</span>
+//         <span className="navBadge">Early Access</span>
+//       </nav>
+
+//       {/* HERO */}
+//       <div className="hero">
+//         <span className="heroTag">Built for Indian gym goers</span>
+//         <h1 className="h1">
+//           Track macros
+//           <span className="accent"> without the BS</span>
+//         </h1>
+//         <p className="heroSub">
+//           MyFitnessPal doesn't know what <strong className="strong">dal makhani</strong> is.
+//           <br />
+//           We do. Paneer. Roti. Chicken rice. All in there —{" "}
+//           <strong className="strong">in seconds.</strong>
+//         </p>
+//         <p className="trustLine">Free to try. No app download needed.</p>
+//       </div>
+
+//       <div className="divider" />
+
+//       {/* PAIN */}
+//       <section className="section">
+//         <h2 className="sectionHeading">Sound familiar?</h2>
+//         <ul className="painList">
+//           {PAINS.map((pain, i) => (
+//             <li key={i} className="painItem">
+//               <span className="xMark">✕</span>
+//               <span>{pain}</span>
+//             </li>
+//           ))}
+//         </ul>
+//       </section>
+
+//       <div className="divider" />
+
+//       {/* HOW IT WORKS */}
+//       <section className="section">
+//         <h2 className="sectionHeading">How it works</h2>
+//         <div>
+//           {STEPS.map((step, i) => (
+//             <div
+//               key={i}
+//               className="step"
+//               style={{
+//                 borderBottom:
+//                   i < STEPS.length - 1
+//                     ? "0.5px solid rgba(255,255,255,0.06)"
+//                     : "none",
+//               }}
+//             >
+//               <div className="stepNum">{step.num}</div>
+//               <div>
+//                 <h3 className="stepTitle">{step.title}</h3>
+//                 <p className="stepDesc">{step.desc}</p>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </section>
+
+//       <div className="divider" />
+
+//       {/* HEALTH CALCULATOR */}
+//       <HealthCalculator />
+
+//       <div className="divider" />
+
+//       {/* FOOD CHIPS */}
+//       <section className="section" style={{ paddingBottom: "3rem" }}>
+//         <h2 className="sectionHeading">Foods already in there</h2>
+//         <div className="chipGrid">
+//           {FOODS.map((food, i) => (
+//             <div key={i} className="chip">
+//               {food.name}
+//               {food.protein && (
+//                 <span className="chipMacro">{food.protein}</span>
+//               )}
+//             </div>
+//           ))}
+//         </div>
+//       </section>
+
+//       {/* CTA FOOTER */}
+//       <div className="ctaFooter">
+//         <h2 style={{ fontSize: "32px", marginBottom: "0.4rem" }} className="sectionHeading">
+//           Want early access?
+//         </h2>
+//         <p className="ctaSubtext">
+//           Drop your email — we'll let you in first when it's ready.
+//         </p>
+//         <div style={{ maxWidth: 440, margin: "0 auto" }}>
+//           <EmailForm
+//             buttonLabel="Notify Me"
+//             successMsg="Locked in. You'll hear from us first."
+//           />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+export default function App(){
+  return <TrackerDashboard/>
 }
 
 const styles = {
@@ -448,6 +651,148 @@ const styles = {
     lineHeight: 1.5,
   },
 
+  /* HEALTH CALCULATOR */
+  healthSubtitle: {
+    fontSize: "14px",
+    color: "#7a7a72",
+    marginBottom: "1.8rem",
+    lineHeight: 1.6,
+  },
+  healthForm: {
+    background: "rgba(255,255,255,0.03)",
+    border: "0.5px solid rgba(255,255,255,0.07)",
+    borderRadius: "8px",
+    padding: "1.5rem",
+    marginBottom: "1.8rem",
+  },
+  formRow: {
+    display: "flex",
+    gap: "12px",
+    marginBottom: "12px",
+    flexWrap: "wrap",
+  },
+  formInput: {
+    flex: 1,
+    minWidth: "140px",
+    background: "rgba(255,255,255,0.05)",
+    border: "0.5px solid rgba(255,255,255,0.12)",
+    color: "#f0ede6",
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: "13px",
+    padding: "10px 12px",
+    borderRadius: "6px",
+    outline: "none",
+    transition: "border-color 0.2s",
+  },
+  calcBtn: {
+    width: "100%",
+    background: "#e8ff47",
+    color: "#0d0d0d",
+    border: "none",
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: "14px",
+    fontWeight: 600,
+    padding: "12px",
+    borderRadius: "6px",
+    cursor: "pointer",
+    transition: "background 0.2s",
+  },
+  resultsBox: {
+    display: "flex",
+    gap: "16px",
+    marginBottom: "2rem",
+    flexWrap: "wrap",
+  },
+  resultCard: {
+    flex: 1,
+    minWidth: "200px",
+    background: "rgba(255,255,255,0.03)",
+    border: "0.5px solid rgba(255,255,255,0.07)",
+    borderRadius: "8px",
+    padding: "1.5rem",
+    textAlign: "center",
+  },
+  resultTitle: {
+    fontSize: "13px",
+    color: "#7a7a72",
+    fontWeight: 500,
+    marginBottom: "8px",
+    textTransform: "uppercase",
+    letterSpacing: "0.5px",
+  },
+  resultValue: {
+    fontSize: "32px",
+    fontFamily: "'DM Mono', monospace",
+    fontWeight: 600,
+    marginBottom: "4px",
+  },
+  resultStatus: {
+    fontSize: "13px",
+    color: "#f0ede6",
+    fontWeight: 500,
+    marginBottom: "4px",
+  },
+  resultHint: {
+    fontSize: "12px",
+    color: "#6a6a62",
+  },
+  goalsHeading: {
+    fontSize: "16px",
+    fontWeight: 500,
+    color: "#f0ede6",
+    marginBottom: "1rem",
+    marginTop: "2rem",
+  },
+  goalsGrid: {
+    display: "flex",
+    gap: "12px",
+    marginBottom: "1.8rem",
+    flexWrap: "wrap",
+  },
+  goalCard: {
+    flex: 1,
+    minWidth: "140px",
+    padding: "1rem",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: "all 0.2s",
+  },
+  goalTitle: {
+    fontSize: "13px",
+    fontWeight: 600,
+    color: "#f0ede6",
+    marginBottom: "6px",
+  },
+  goalCalories: {
+    fontSize: "18px",
+    fontFamily: "'DM Mono', monospace",
+    color: "#e8ff47",
+    fontWeight: 600,
+    marginBottom: "2px",
+  },
+  goalDesc: {
+    fontSize: "12px",
+    color: "#6a6a62",
+  },
+  tipBox: {
+    background: "rgba(232,255,71,0.05)",
+    border: "0.5px solid rgba(232,255,71,0.15)",
+    borderRadius: "8px",
+    padding: "1.2rem",
+  },
+  tipTitle: {
+    fontSize: "14px",
+    fontWeight: 600,
+    color: "#e8ff47",
+    marginBottom: "8px",
+  },
+  tipText: {
+    fontSize: "13px",
+    color: "#7a7a72",
+    lineHeight: 1.6,
+  },
+
   /* CHIPS */
   chipGrid: {
     display: "flex",
@@ -482,5 +827,24 @@ const styles = {
     fontSize: "13px",
     color: "#6a6a62",
     marginBottom: "1.8rem",
+  },
+  actionButtons: {
+    display: 'flex',
+    gap: '15px',
+    justifyContent: 'center',
+    marginTop: '20px',
+    flexWrap: 'wrap', // Allows wrapping on smaller screens
+  },
+  actionButton: {
+    backgroundColor: '#FFD700',
+    color: '#000',
+    border: 'none',
+    padding: '12px 24px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s',
+    minWidth: '200px', // Ensures consistent button width
   },
 };
