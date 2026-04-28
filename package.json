@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon backend/server.js",
+    "seed": "node backend/seed/food.seed.js",
     "start": "node server.js",
     "build": "vite build",
     "lint": "eslint .",

@@ -1,10 +1,11 @@
 import {Router} from 'express'
+import { getAllFoods, getFoodById } from '../controllers/food.controller.js'
 
 const foodRouter = Router()
 
-foodRouter.get('/', (req, res) => {})// Get all foods
+foodRouter.get('/', getAllFoods)// Get all foods
 
-foodRouter.get('/:id', (req, res) => {})// Get food by ID
+foodRouter.get('/:id', getFoodById)// Get food by ID
 
 foodRouter.post('/', (req, res) => {})// Create new food
 
