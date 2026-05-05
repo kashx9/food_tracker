@@ -1307,3 +1307,97 @@ export default function App() {
 
   return <IndiFitLanding onStartTracking={handleStartTracking} />;
 }
+
+
+// export default function App() {
+//   const [stage, setStage] = useState("landing") // landing | auth | dashboard
+//   const [authMode, setAuthMode] = useState("login") // login | signup
+//   const [user, setUser] = useState(null)
+//   const [token, setToken] = useState(localStorage.getItem("token") || "")
+
+//   const handleStart = () => {
+//     setStage("auth")
+//   }
+
+//   const handleAuthSuccess = (userData, jwt) => {
+//     localStorage.setItem("token", jwt)
+//     setUser(userData)
+//     setToken(jwt)
+//     setStage("dashboard")
+//   }
+
+//   if (stage === "dashboard" && token) {
+//     return <TrackerDashboard userName={user?.name || "User"} />
+//   }
+
+//   return (
+//     <div>
+//       {stage === "landing" && (
+//         <div>
+//           <h1>Welcome to Food Tracker</h1>
+//           <button onClick={handleStart}>Start tracking calories</button>
+//         </div>
+//       )}
+
+//       {stage === "auth" && (
+//         <AuthForm
+//           mode={authMode}
+//           onModeChange={setAuthMode}
+//           onSuccess={handleAuthSuccess}
+//         />
+//       )}
+//     </div>
+//   )
+// }
+
+// function AuthForm({ mode, onModeChange, onSuccess }) {
+//   const [name, setName] = useState("")
+//   const [email, setEmail] = useState("")
+//   const [password, setPassword] = useState("")
+//   const [error, setError] = useState("")
+
+//   const endpoint =
+//     mode === "signup" ? "/api/v1/auth/register" : "/api/v1/auth/login"
+
+//   const handleSubmit = async () => {
+//     try {
+//       const body = mode === "signup"
+//         ? { name, email, password }
+//         : { email, password }
+
+//       const res = await fetch(endpoint, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(body),
+//       })
+
+//       const data = await res.json()
+//       if (!res.ok) throw new Error(data.message || "Auth failed")
+
+//       onSuccess(data.data.user || data.data.data, data.data.token)
+//     } catch (err) {
+//       setError(err.message)
+//     }
+//   }
+
+//   return (
+//     <div>
+//       <div>
+//         <button onClick={() => onModeChange("login")}>Login</button>
+//         <button onClick={() => onModeChange("signup")}>Sign up</button>
+//       </div>
+
+//       {mode === "signup" && (
+//         <input value={name} onChange={e => setName(e.target.value)} placeholder="Name" />
+//       )}
+//       <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+//       <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+
+//       <button onClick={handleSubmit}>
+//         {mode === "signup" ? "Create account" : "Login"}
+//       </button>
+
+//       {error && <p style={{ color: "red" }}>{error}</p>}
+//     </div>
+//   )
+// }

@@ -1,13 +1,13 @@
 import {Router} from 'express'
+import { addMeal, deleteMealItem, getMealById } from '../controllers/meal.controller.js'
+import authorize from '../middleware/auth.middleware.js'
 
 const mealRouter = Router()
 
-mealRouter.get('/:id', (req, res) => {})// Get meal by ID
+mealRouter.get('/:date',authorize ,getMealById)// Get meal by ID
 
-mealRouter.post('/', (req, res) => {})// Create new meal
+mealRouter.post('/',authorize ,addMeal)// Create new meal
 
-mealRouter.put('/:id', (req, res) => {})// Update meal by ID
-
-mealRouter.delete('/:id', (req, res) => {})// Delete meal by ID
+mealRouter.delete('/:mealId/:mealType/:itemId', authorize, deleteMealItem)// Delete meal by ID
 
 export default mealRouter
