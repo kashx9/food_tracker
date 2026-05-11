@@ -68,7 +68,7 @@ export const signIn = async(req,res,next)=>{
             message: 'User signed in',
             data:{
                 token,
-                data: user
+                user
             }
         })
     } catch (error) {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon backend/server.js",
     "seed": "node backend/seed/food.seed.js",
-    "start": "node server.js",
+    "start": "node backend/server.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

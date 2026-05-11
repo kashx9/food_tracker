@@ -16,7 +16,7 @@ const foodSchema = new mongoose.Schema({
     unit: {
         type: String,
         required: [true, 'Unit is required'],
-        enum: ['g', 'ml', 'piece', 'scoop', 'tbsp', 'tsp']  // Added 'piece', 'scoop'
+        enum: ['g', 'ml', 'piece', 'scoop', 'tbsp', 'tsp', 'bowl', 'glass', 'cup', 'portion','slice','plate','half','full']  // Added 'piece', 'scoop'
     },
     gramsPerUnit: {
         type: Number,

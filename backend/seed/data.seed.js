@@ -342,4 +342,693 @@ export default [
     carbs: 0.2,
     fat: 0,
   },
+  {
+    name: 'Idli',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 40,
+    calories: 130,
+    protein: 4,
+    carbs: 28,
+    fat: 1
+  },
+  {
+    name: 'Plain Dosa',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 100,
+    calories: 184,
+    protein: 5,
+    carbs: 30,
+    fat: 5
+  },
+  {
+    name: 'Masala Dosa',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 150,
+    calories: 230,
+    protein: 6,
+    carbs: 32,
+    fat: 9
+  },
+  {
+    name: 'Poha',
+    category: 'Carbs',
+    unit: 'bowl',
+    gramsPerUnit: 180,
+    calories: 130,
+    protein: 2.5,
+    carbs: 23,
+    fat: 4
+  },
+  {
+    name: 'Upma',
+    category: 'Carbs',
+    unit: 'bowl',
+    gramsPerUnit: 180,
+    calories: 150,
+    protein: 4,
+    carbs: 26,
+    fat: 3
+  },
+  {
+    name: 'Plain Paratha',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 80,
+    calories: 300,
+    protein: 6,
+    carbs: 45,
+    fat: 10
+  },
+  {
+    name: 'Aloo Paratha',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 120,
+    calories: 320,
+    protein: 6,
+    carbs: 48,
+    fat: 12
+  },
+  {
+    name: 'Paneer Paratha',
+    category: 'Protein',
+    unit: 'piece',
+    gramsPerUnit: 120,
+    calories: 300,
+    protein: 11,
+    carbs: 35,
+    fat: 12
+  },
+  {
+    name: 'Omelette',
+    category: 'Protein',
+    unit: 'piece',
+    gramsPerUnit: 100,
+    calories: 190,
+    protein: 12,
+    carbs: 2,
+    fat: 15
+  },
+  {
+    name: 'Milk (Toned)',
+    category: 'Dairy',
+    unit: 'glass',
+    gramsPerUnit: 200,
+    calories: 44,
+    protein: 3.5,
+    carbs: 4.5,
+    fat: 1.5
+  },
+  {
+    name: 'Curd (Dahi)',
+    category: 'Dairy',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 98,
+    protein: 3.5,
+    carbs: 3.4,
+    fat: 4.3
+  },
+  {
+    name: 'Paneer Bhurji',
+    category: 'Protein',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 265,
+    protein: 14,
+    carbs: 6,
+    fat: 20
+  },
+  {
+    name: 'Sprouts Salad',
+    category: 'Protein',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 120,
+    protein: 9,
+    carbs: 20,
+    fat: 1
+  },
+  {
+    name: 'Banana',
+    category: 'Fruit',
+    unit: 'piece',
+    gramsPerUnit: 120,
+    calories: 89,
+    protein: 1.1,
+    carbs: 23,
+    fat: 0.3
+  },
+  {
+    name: 'Apple',
+    category: 'Fruit',
+    unit: 'piece',
+    gramsPerUnit: 150,
+    calories: 52,
+    protein: 0.3,
+    carbs: 14,
+    fat: 0.2
+  },
+  {
+    name: 'Vegetable Uttapam',
+    category: 'Vegetable',
+    unit: 'piece',
+    gramsPerUnit: 120,
+    calories: 180,
+    protein: 5,
+    carbs: 28,
+    fat: 5
+  },
+  {
+    name: 'Curd Rice',
+    category: 'Carbs',
+    unit: 'bowl',
+    gramsPerUnit: 250,
+    calories: 108,
+    protein: 3.0,
+    carbs: 17,
+    fat: 2.5
+  },
+  {
+    name: 'Vegetable Pulao',
+    category: 'Carbs',
+    unit: 'plate',
+    gramsPerUnit: 300,
+    calories: 145,
+    protein: 3.5,
+    carbs: 24,
+    fat: 4
+  },
+  {
+    name: 'Bisibele Bath',
+    category: 'Carbs',
+    unit: 'bowl',
+    gramsPerUnit: 300,
+    calories: 140,
+    protein: 5.5,
+    carbs: 21,
+    fat: 6
+  },
+  {
+    name: 'Khichdi',
+    category: 'Carbs',
+    unit: 'bowl',
+    gramsPerUnit: 300,
+    calories: 112,
+    protein: 4.5,
+    carbs: 19,
+    fat: 3.0
+  },
+  {
+    name: 'Veg Biryani',
+    category: 'Carbs',
+    unit: 'plate',
+    gramsPerUnit: 350,
+    calories: 175,
+    protein: 5,
+    carbs: 26,
+    fat: 6.5
+  },
+  {
+    name: 'Chicken Biryani',
+    category: 'Protein',
+    unit: 'plate',
+    gramsPerUnit: 400,
+    calories: 215,
+    protein: 10.5,
+    carbs: 23,
+    fat: 9
+  },
+  // ── VEGETABLE SABJIS ───────────────────────
+  {
+    name: 'Aloo Gobi (Home)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 120,
+    calories: 90,
+    protein: 2,
+    carbs: 14,
+    fat: 3
+  },
+  {
+    name: 'Aloo Gobi (Restaurant)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 200,
+    calories: 130,
+    protein: 2.5,
+    carbs: 16,
+    fat: 7
+  },
+  {
+    name: 'Bhindi Masala (Home)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 120,
+    calories: 80,
+    protein: 2,
+    carbs: 10,
+    fat: 3
+  },
+  {
+    name: 'Bhindi Masala (Restaurant)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 200,
+    calories: 140,
+    protein: 2.5,
+    carbs: 12,
+    fat: 9
+  },
+
+  // ── LEGUME / DAL BASED ─────────────────────
+  {
+    name: 'Kadhi (Home)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 100,
+    protein: 3,
+    carbs: 8,
+    fat: 5
+  },
+  {
+    name: 'Kadhi (Restaurant)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 140,
+    protein: 4,
+    carbs: 10,
+    fat: 8
+  },
+  {
+    name: 'Rajma (Home)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 120,
+    protein: 8,
+    carbs: 20,
+    fat: 2
+  },
+  {
+    name: 'Rajma (Restaurant)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 160,
+    protein: 9,
+    carbs: 22,
+    fat: 6
+  },
+  {
+    name: 'Chole (Home)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 140,
+    protein: 8,
+    carbs: 22,
+    fat: 3
+  },
+  {
+    name: 'Chole (Restaurant)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 190,
+    protein: 9,
+    carbs: 24,
+    fat: 8
+  },
+  {
+    name: 'Sambar (Home)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 80,
+    protein: 3,
+    carbs: 12,
+    fat: 2
+  },
+  {
+    name: 'Sambar (Restaurant)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 110,
+    protein: 4,
+    carbs: 14,
+    fat: 4
+  },
+
+  // ── NON-VEG ────────────────────────────────
+  {
+    name: 'Chicken Curry (Home)',
+    category: 'Protein',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 150,
+    protein: 15,
+    carbs: 5,
+    fat: 8
+  },
+  {
+    name: 'Chicken Curry (Restaurant)',
+    category: 'Protein',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 220,
+    protein: 18,
+    carbs: 6,
+    fat: 15
+  },
+
+  // ── PANEER / RICH GRAVIES ──────────────────
+  {
+    name: 'Paneer Butter Masala (Home)',
+    category: 'Dairy',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 260,
+    protein: 10,
+    carbs: 8,
+    fat: 20
+  },
+  {
+    name: 'Paneer Butter Masala (Restaurant)',
+    category: 'Dairy',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 320,
+    protein: 12,
+    carbs: 10,
+    fat: 26
+  },
+  {
+    name: 'Dal Makhani (Home)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 180,
+    protein: 7,
+    carbs: 18,
+    fat: 8
+  },
+  {
+    name: 'Dal Makhani (Restaurant)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 260,
+    protein: 8,
+    carbs: 20,
+    fat: 16
+  },
+
+  // ── EXTRA COMMON GRAVIES ───────────────────
+  {
+    name: 'Mix Veg Curry (Home)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 90,
+    protein: 3,
+    carbs: 12,
+    fat: 3
+  },
+  {
+    name: 'Mix Veg Curry (Restaurant)',
+    category: 'Vegetable',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 140,
+    protein: 4,
+    carbs: 14,
+    fat: 8
+  },
+  {
+    name: 'Egg Curry (Home)',
+    category: 'Protein',
+    unit: 'bowl',
+    gramsPerUnit: 150,
+    calories: 140,
+    protein: 10,
+    carbs: 4,
+    fat: 9
+  },
+  {
+    name: 'Egg Curry (Restaurant)',
+    category: 'Protein',
+    unit: 'bowl',
+    gramsPerUnit: 220,
+    calories: 200,
+    protein: 12,
+    carbs: 5,
+    fat: 14
+  },
+  {
+    name: 'Veg Burger',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 150,
+    calories: 260,
+    protein: 8,
+    carbs: 35,
+    fat: 10
+  },
+  {
+    name: 'Chicken Burger',
+    category: 'Protein',
+    unit: 'piece',
+    gramsPerUnit: 170,
+    calories: 290,
+    protein: 14,
+    carbs: 30,
+    fat: 12
+  },
+  {
+    name: 'Pizza (Veg)',
+    category: 'Carbs',
+    unit: 'slice',
+    gramsPerUnit: 120,
+    calories: 266,
+    protein: 11,
+    carbs: 33,
+    fat: 10
+  },
+  {
+    name: 'Pizza (Chicken)',
+    category: 'Protein',
+    unit: 'slice',
+    gramsPerUnit: 130,
+    calories: 285,
+    protein: 13,
+    carbs: 30,
+    fat: 12
+  },
+  {
+    name: 'Samosa',
+    category: 'Fat',
+    unit: 'piece',
+    gramsPerUnit: 100,
+    calories: 308,
+    protein: 6,
+    carbs: 31,
+    fat: 18
+  },
+  {
+    name: 'Pav Bhaji',
+    category: 'Carbs',
+    unit: 'plate',
+    gramsPerUnit: 350,
+    calories: 180,
+    protein: 5,
+    carbs: 28,
+    fat: 6
+  },
+  {
+    name: 'Vada Pav',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 140,
+    calories: 290,
+    protein: 6,
+    carbs: 36,
+    fat: 14
+  },
+  {
+    name: 'Chicken Roll',
+    category: 'Protein',
+    unit: 'piece',
+    gramsPerUnit: 180,
+    calories: 240,
+    protein: 14,
+    carbs: 28,
+    fat: 10
+  },
+  {
+    name: 'Veg Roll',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 160,
+    calories: 220,
+    protein: 6,
+    carbs: 30,
+    fat: 9
+  },
+  {
+    name: 'Chowmein (Veg)',
+    category: 'Carbs',
+    unit: 'plate',
+    gramsPerUnit: 300,
+    calories: 190,
+    protein: 6,
+    carbs: 30,
+    fat: 6
+  },
+  {
+    name: 'Chowmein (Chicken)',
+    category: 'Protein',
+    unit: 'plate',
+    gramsPerUnit: 320,
+    calories: 220,
+    protein: 12,
+    carbs: 28,
+    fat: 8
+  },
+  {
+    name: 'Fried Rice (Veg)',
+    category: 'Carbs',
+    unit: 'plate',
+    gramsPerUnit: 300,
+    calories: 180,
+    protein: 5,
+    carbs: 32,
+    fat: 5
+  },
+  {
+    name: 'Fried Rice (Chicken)',
+    category: 'Protein',
+    unit: 'plate',
+    gramsPerUnit: 320,
+    calories: 210,
+    protein: 11,
+    carbs: 30,
+    fat: 7
+  },
+  {
+    name: 'Momos (Veg)',
+    category: 'Carbs',
+    unit: 'plate',
+    gramsPerUnit: 200,
+    calories: 200,
+    protein: 6,
+    carbs: 30,
+    fat: 6
+  },
+  {
+    name: 'Momos (Chicken)',
+    category: 'Protein',
+    unit: 'plate',
+    gramsPerUnit: 220,
+    calories: 230,
+    protein: 12,
+    carbs: 28,
+    fat: 8
+  },
+  {
+    name: 'Pakora',
+    category: 'Fat',
+    unit: 'plate',
+    gramsPerUnit: 150,
+    calories: 300,
+    protein: 6,
+    carbs: 20,
+    fat: 22
+  },
+  {
+    name: 'Spring Roll',
+    category: 'Carbs',
+    unit: 'piece',
+    gramsPerUnit: 90,
+    calories: 220,
+    protein: 5,
+    carbs: 25,
+    fat: 12
+  },
+  {
+    name: 'Cold Drink',
+    category: 'Carbs',
+    unit: 'glass',
+    gramsPerUnit: 250,
+    calories: 42,
+    protein: 0,
+    carbs: 10.6,
+    fat: 0
+  },
+  {
+    name: 'Milkshake',
+    category: 'Dairy',
+    unit: 'glass',
+    gramsPerUnit: 300,
+    calories: 150,
+    protein: 4,
+    carbs: 20,
+    fat: 6
+  },
+  {
+    name: 'Grilled Chicken (Half)',
+    category: 'Protein',
+    unit: 'half',
+    gramsPerUnit: 300,
+    calories: 165,
+    protein: 27,
+    carbs: 0,
+    fat: 6
+  },
+  {
+    name: 'Grilled Chicken (Full)',
+    category: 'Protein',
+    unit: 'full',
+    gramsPerUnit: 600,
+    calories: 165,
+    protein: 27,
+    carbs: 0,
+    fat: 6
+  },
+  {
+    name: 'Tandoori Chicken (Half)',
+    category: 'Protein',
+    unit: 'half',
+    gramsPerUnit: 300,
+    calories: 190,
+    protein: 25,
+    carbs: 2,
+    fat: 9
+  },
+  {
+    name: 'Tandoori Chicken (Full)',
+    category: 'Protein',
+    unit: 'full',
+    gramsPerUnit: 600,
+    calories: 190,
+    protein: 25,
+    carbs: 2,
+    fat: 9
+  },
+  {
+    name: 'Chicken Shawarma',
+    category: 'Protein',
+    unit: 'piece',
+    gramsPerUnit: 250,
+    calories: 220,
+    protein: 12,
+    carbs: 20,
+    fat: 10
+  }
 ]

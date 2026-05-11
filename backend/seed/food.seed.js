@@ -16,7 +16,7 @@ async function seedFoods() {
         // inside seedFoods.js, after JSON.parse
 
         const VALID_CATEGORIES = ['Protein', 'Carbs', 'Fat', 'Beverage', 'Vegetable', 'Fruit', 'Dairy', 'Other']
-        const VALID_UNITS = ['g', 'ml', 'piece', 'scoop', 'tbsp', 'tsp']
+        const VALID_UNITS = ['g', 'ml', 'piece', 'scoop', 'tbsp', 'tsp', 'bowl','glass', 'cup', 'portion','slice','plate','half','full']
 
         const errors = []
         foods.forEach((food, i) => {
