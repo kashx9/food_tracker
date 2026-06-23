@@ -1,0 +1,177 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-panel {
+  background: #1a1a1a;
+  border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 1.4rem;
+  width: 100%;
+  max-width: 380px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: #f0ede6;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: #6a6a62;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modal-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  color: #f0ede6;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  padding: 0 12px;
+  height: 40px;
+  border-radius: 8px;
+  outline: none;
+}
+
+.food-list {
+  overflow-y: auto;
+  max-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.food-item {
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #161616;
+  border: 0.5px solid rgba(255,255,255,0.07);
+  font-size: 13px;
+  color: #f0ede6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.food-item-cal {
+  font-size: 11px;
+  color: #6a6a62;
+  font-family: 'DM Mono', monospace;
+}
+
+.food-empty {
+  font-size: 13px;
+  color: #6a6a62;
+  text-align: center;
+  padding: 1rem;
+}
+
+.selected-food-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.selected-food-header {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(232,255,71,0.12);
+  border: 0.5px solid rgba(232,255,71,0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-food-name {
+  font-size: 13px;
+  color: #f0ede6;
+  font-weight: 500;
+}
+
+.selected-food-change {
+  background: none;
+  border: none;
+  color: #6a6a62;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.qty-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-label {
+  font-size: 12px;
+  color: #6a6a62;
+  white-space: nowrap;
+}
+
+.qty-input {
+  flex: 1;
+  text-align: center;
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.preview-item {
+  background: #161616;
+  border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 8px 4px;
+  text-align: center;
+}
+
+.preview-val {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'DM Mono', monospace;
+}
+
+.preview-label {
+  font-size: 10px;
+  color: #6a6a62;
+  margin-top: 2px;
+}
+
+.modal-add-btn {
+  width: 100%;
+  background: #e8ff47;
+  color: #0d0d0d;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  height: 42px;
+  border-radius: 8px;
+  cursor: pointer;
+}

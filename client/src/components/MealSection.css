@@ -1,0 +1,103 @@
+.meal-section {
+  background: #1a1a1a;
+  border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.meal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+}
+
+.meal-header--bordered {
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+}
+
+.meal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: #f0ede6;
+}
+
+.meal-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meal-cal-badge {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: #6a6a62;
+}
+
+.meal-add-btn {
+  background: rgba(232,255,71,0.1);
+  border: 0.5px solid rgba(232,255,71,0.25);
+  color: #e8ff47;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.meal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+}
+
+.meal-item--bordered {
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+}
+
+.meal-item-name {
+  font-size: 13px;
+  color: #f0ede6;
+}
+
+.meal-item-qty {
+  font-size: 11px;
+  color: #6a6a62;
+  margin-left: 6px;
+}
+
+.meal-item-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meal-macros {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: #6a6a62;
+}
+
+.meal-protein { color: #4ade80; }
+.meal-carbs   { color: #60a5fa; }
+.meal-fat     { color: #f97316; }
+
+.meal-item-cal {
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  color: #f0ede6;
+}
+
+.meal-remove-btn {
+  background: none;
+  border: none;
+  color: #3a3a32;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+}

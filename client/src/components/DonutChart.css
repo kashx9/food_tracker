@@ -1,0 +1,36 @@
+.donut-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+}
+
+.donut-svg {
+  transform: rotate(-90deg);
+}
+
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-cal {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  color: #f0ede6;
+  line-height: 1;
+}
+
+.donut-cal--over {
+  color: #ff4f4f;
+}
+
+.donut-target {
+  font-size: 10px;
+  color: #6a6a62;
+  letter-spacing: 0.5px;
+}
