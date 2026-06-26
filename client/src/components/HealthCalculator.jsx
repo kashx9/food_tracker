@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { getMacros} from '../utils/GetMacros.js';
+import { getMacros} from '../utils/getMacros.js';
 import "./HealthCalculator.css";
 
 export function HealthCalculator({ onStartTracking, loading = false }) {
