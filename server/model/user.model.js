@@ -18,6 +18,22 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true,'Password is required'],
         min: 6
+    },
+    calories:{
+        type: Number,
+        min: 0
+    },
+    protein: {
+        type: Number,
+        min: 0
+    },
+    carbs: {
+        type: Number,
+        min: 0
+    },
+    fat: {
+        type: Number,
+        min: 0
     }
 },{timestamps: true})
 

@@ -1,4 +1,4 @@
-const BASE = "http://localhost:5000/api/v1";
+const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 function authHeaders() {
   return {
@@ -43,5 +43,17 @@ export async function deleteMeal(mealDocId, section, itemId) {
   return fetch(`${BASE}/meals/${mealDocId}/${section}/${itemId}`, {
     method: "DELETE",
     headers: authHeaders(),
+  });
+}
+
+export async function fetchUser(userId) {
+  return fetch(`${BASE}/users/${userId}`, { headers: authHeaders() });
+}
+
+export async function updateUserTargets(userId, targets) {
+  return fetch(`${BASE}/users/${userId}/targets`, {
+    method: "PUT",
+    headers: authHeaders(),
+    body: JSON.stringify(targets),
   });
 }

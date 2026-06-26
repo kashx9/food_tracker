@@ -1,0 +1,39 @@
+.metrics-page {
+  min-height: 100vh;
+  background: #0d0d0d;
+  font-family: 'DM Sans', sans-serif;
+  color: #f0ede6;
+  display: flex;
+  flex-direction: column;
+}
+
+.metrics-body {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.metrics-header {
+  margin-bottom: 2rem;
+}
+
+.metrics-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 2px;
+  color: #f0ede6;
+  margin-bottom: 6px;
+}
+
+.metrics-subtitle {
+  font-size: 13px;
+  color: #6a6a62;
+}
+
+.metrics-error {
+  color: #ef4444;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 0.75rem;
+}

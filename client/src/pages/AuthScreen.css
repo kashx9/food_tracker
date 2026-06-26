@@ -13,6 +13,14 @@
   overflow: hidden;
 }
 
+.auth-center-body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
 .auth-left {
   flex: 1;
   overflow-y: auto;

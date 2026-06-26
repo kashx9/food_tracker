@@ -14,11 +14,11 @@ export default function TrackerDashboard() {
   const { userData, logout } = useAuth();
   const navigate = useNavigate();
 
-  const userName     = userData?.userName;
-  const targetCal    = userData?.targetCal;
-  const targetProtein = userData?.protein;
-  const targetCarbs  = userData?.carbs;
-  const targetFat    = userData?.fat;
+  const userName      = userData?.userName;
+  const targetCal     = userData?.targetCal ?? 0;
+  const targetProtein = userData?.protein   ?? 0;
+  const targetCarbs   = userData?.carbs     ?? 0;
+  const targetFat     = userData?.fat       ?? 0;
   const [foods,        setFoods]        = useState([]);
   const [foodsLoading, setFoodsLoading] = useState(true);
   const [foodsError,   setFoodsError]   = useState(null);

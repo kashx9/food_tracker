@@ -10,8 +10,10 @@ export function AuthProvider({ children }) {
     if (!savedUser || !token) return null;
     const user = JSON.parse(savedUser);
     return {
+      userId:    user.userId,
       userName:  user.name || user.userName || "User",
-      targetCal: user.targetCal,
+      email:     user.email,
+      targetCal: user.calories,
       protein:   user.protein,
       carbs:     user.carbs,
       fat:       user.fat,
@@ -25,6 +27,7 @@ export function AuthProvider({ children }) {
   function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("healthMetrics");
     setUserData(null);
   }
 

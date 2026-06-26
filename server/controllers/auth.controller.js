@@ -22,7 +22,7 @@ export const signUp = async(req,res,next)=>{
         const hashedPassword = await bcrypt.hash(password, salt)
         const newUser = await User.create([{name,email,password:hashedPassword}], {session})
 
-        const token = jwt.sign({userId:newUser._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN})
+        const token = jwt.sign({userId:newUser[0]._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN})
 
         await session.commitTransaction()
         await session.endSession()
@@ -32,7 +32,7 @@ export const signUp = async(req,res,next)=>{
             message: 'User created',
             data: {
                 token,
-                user: newUser
+                user: newUser[0]
             }
         })
     } catch (error) {

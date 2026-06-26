@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../components/AuthContext";
-import { HealthCalculator } from "../components/HealthCalculator";
 import { NavBar } from "../components/NavBar";
 import { login, register } from "../utils/api";
 import "./AuthScreen.css";
@@ -25,12 +24,7 @@ export default function AuthScreen() {
   const [searchParams]       = useSearchParams();
 
   const [mode,     setMode]     = useState(searchParams.get("mode") || "signup");
-  const [userData, setUserData] = useState(() => {
-    const saved = localStorage.getItem("healthMetrics");
-    return saved ? JSON.parse(saved) : null;
-  });
-
-  const [name,     setName]     = useState(userData?.userName || "");
+  const [name,     setName]     = useState("");
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
 
@@ -65,19 +59,33 @@ export default function AuthScreen() {
         return;
       }
 
+      const user = data.data.user;
       localStorage.setItem("token", data.data.token);
       localStorage.setItem("user", JSON.stringify({
-        userId: data.data.user._id,
-        email:  data.data.user.email,
-        name:   data.data.user.name,
-        ...userData,
+        userId:   user._id,
+        email:    user.email,
+        name:     user.name,
+        calories: user.calories,
+        protein:  user.protein,
+        carbs:    user.carbs,
+        fat:      user.fat,
       }));
 
       authLogin({
-        ...userData,
-        userName: data.data.user?.name || name || userData?.userName || "User",
+        userId:    user._id,
+        userName:  user.name,
+        email:     user.email,
+        targetCal: user.calories,
+        protein:   user.protein,
+        carbs:     user.carbs,
+        fat:       user.fat,
       });
-      navigate("/tracker");
+
+      if (mode === "signup") {
+        navigate("/health-setup");
+      } else {
+        navigate(user.calories ? "/tracker" : "/health-setup");
+      }
 
     } catch {
       setApiError("Could not connect to server. Please try again later.");
@@ -86,22 +94,10 @@ export default function AuthScreen() {
     }
   }
 
-  function handleCalculatorDone(data) {
-    setUserData(data);
-    setName(data.userName || name);
-  }
-
   return (
     <div className="auth-screen">
-
       <NavBar onBack={() => navigate("/")} />
-
-      <div className="auth-body">
-
-        <div className="auth-left">
-          <HealthCalculator onStartTracking={handleCalculatorDone} />
-        </div>
-
+      <div className="auth-center-body">
         <div className="auth-right">
           <div className="auth-form-wrapper">
 
@@ -111,13 +107,12 @@ export default function AuthScreen() {
               </h1>
               <p className="auth-subtitle">
                 {mode === "signup"
-                  ? "Your macros are ready. Just save your account to start tracking."
+                  ? "Sign up, then set your daily targets."
                   : "Log in to continue tracking your macros."}
               </p>
             </div>
 
             <div className="auth-card">
-
               <div className="auth-tab-grid">
                 {["signup", "login"].map(m => (
                   <button key={m}
@@ -141,7 +136,7 @@ export default function AuthScreen() {
               )}
 
               <button onClick={handleSubmit} disabled={loading} className="auth-submit-btn">
-                {loading ? "Please wait..." : mode === "signup" ? "Create Account & Start Tracking →" : "Log In & Continue →"}
+                {loading ? "Please wait..." : mode === "signup" ? "Create Account →" : "Log In →"}
               </button>
 
               <p className="auth-toggle-text">
@@ -153,26 +148,6 @@ export default function AuthScreen() {
                 </span>
               </p>
             </div>
-
-            {userData?.targetCal && (
-              <div className="auth-targets">
-                <p className="auth-targets-label">Your targets being saved</p>
-                <div className="auth-targets-grid">
-                  {[
-                    { label: "Calories", val: userData.targetCal, unit: "kcal" },
-                    { label: "Protein",  val: userData.protein,   unit: "g"    },
-                    { label: "Carbs",    val: userData.carbs,     unit: "g"    },
-                    { label: "Fat",      val: userData.fat,       unit: "g"    },
-                  ].map(m => (
-                    <div key={m.label}>
-                      <div className="auth-target-val">{m.val}</div>
-                      <div className="auth-target-unit">{m.unit}</div>
-                      <div className="auth-target-label">{m.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
           </div>
         </div>

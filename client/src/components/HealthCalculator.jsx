@@ -2,8 +2,7 @@ import {useState} from "react";
 import { getMacros} from '../utils/GetMacros.js';
 import "./HealthCalculator.css";
 
-export function HealthCalculator({ onStartTracking }) {
-  const [name,         setName]         = useState("");
+export function HealthCalculator({ onStartTracking, loading = false }) {
   const [height,       setHeight]       = useState("");
   const [weight,       setWeight]       = useState("");
   const [age,          setAge]          = useState("");
@@ -48,7 +47,7 @@ export function HealthCalculator({ onStartTracking }) {
     const weightKg = parseFloat(weight) || 70;
     const finalCal = useCustomCal && customCal ? parseInt(customCal) : getGoalCalories()[selectedGoal];
     const macros   = getMacros(finalCal, selectedGoal, weightKg);
-    onStartTracking({ userName: name || "User", targetCal: finalCal, ...macros });
+    onStartTracking({ targetCal: finalCal, ...macros });
   }
 
   const healthStatus = bmi ? getHealthStatus(parseFloat(bmi)) : null;
@@ -57,11 +56,10 @@ export function HealthCalculator({ onStartTracking }) {
   return (
     <section className="section">
       <h2 className="sectionHeading">Your Health Profile</h2>
-      <p className="healthSubtitle">Tell us about yourself — we'll calculate your daily calorie needs and health range.</p>
+      <p className="healthSubtitle">Tell us about yourself — we'll calculate your daily calorie needs and macro targets.</p>
 
       <div className="healthForm">
         <div className="formRow">
-          <input type="text" placeholder="Full name" value={name} onChange={e => setName(e.target.value)} className="formInput" />
           <select value={gender} onChange={e => setGender(e.target.value)} className="formInput">
             <option value="male">Male</option><option value="female">Female</option>
           </select>
@@ -119,10 +117,35 @@ export function HealthCalculator({ onStartTracking }) {
             ))}
           </div>
 
+          <button
+            className="custom-cal-toggle"
+            onClick={() => { setUseCustomCal(v => !v); setCustomCal(""); }}
+            style={{
+              marginTop: "10px",
+              background: useCustomCal ? "rgba(232,255,71,0.1)" : "transparent",
+              border: `0.5px solid ${useCustomCal ? "rgba(232,255,71,0.35)" : "rgba(255,255,255,0.12)"}`,
+              color: useCustomCal ? "#e8ff47" : "#6a6a62",
+              borderRadius: "8px",
+              padding: "6px 14px",
+              fontSize: "12px",
+              cursor: "pointer",
+              fontFamily: "inherit",
+              transition: "all 0.2s",
+            }}
+          >
+            {useCustomCal ? "✕ Remove custom" : "+ Set custom calories"}
+          </button>
+
           {useCustomCal && (
             <div className="custom-cal-row">
-              <input type="number" placeholder="e.g. 2200" value={customCal}
-                onChange={e => setCustomCal(e.target.value)} className="formInput custom-cal-input" />
+              <input
+                type="number"
+                placeholder="e.g. 2200"
+                value={customCal}
+                onChange={e => setCustomCal(e.target.value)}
+                className="formInput custom-cal-input"
+                autoFocus
+              />
               <span className="custom-cal-unit">cal / day</span>
             </div>
           )}
@@ -132,18 +155,28 @@ export function HealthCalculator({ onStartTracking }) {
             if (!finalCal) return null;
             const m = getMacros(finalCal, selectedGoal, parseFloat(weight) || 70);
             return (
-              <div className="macro-preview-grid">
-                {[
-                  { label: "Protein", val: m.protein, color: "#4ade80" },
-                  { label: "Carbs",   val: m.carbs,   color: "#60a5fa" },
-                  { label: "Fat",     val: m.fat,     color: "#f97316" },
-                ].map(macro => (
-                  <div key={macro.label} className="macro-preview-item">
-                    <div className="macro-preview-val" style={{ color: macro.color }}>{macro.val}g</div>
-                    <div className="macro-preview-label">{macro.label}</div>
-                  </div>
-                ))}
-              </div>
+              <>
+                <div className="macro-preview-grid">
+                  {[
+                    { label: "Protein", val: m.protein, color: "#4ade80" },
+                    { label: "Carbs",   val: m.carbs,   color: "#60a5fa" },
+                    { label: "Fat",     val: m.fat,     color: "#f97316" },
+                  ].map(macro => (
+                    <div key={macro.label} className="macro-preview-item">
+                      <div className="macro-preview-val" style={{ color: macro.color }}>{macro.val}g</div>
+                      <div className="macro-preview-label">{macro.label}</div>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={handleStartTracking}
+                  className="calcBtn"
+                  style={{ marginTop: "1.5rem", width: "100%" }}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save My Targets →"}
+                </button>
+              </>
             );
           })()}
         </div>
