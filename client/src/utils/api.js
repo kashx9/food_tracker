@@ -57,3 +57,27 @@ export async function updateUserTargets(userId, targets) {
     body: JSON.stringify(targets),
   });
 }
+
+export async function fetchMealHistory(today) {
+  const q = today ? `?today=${today}` : "";
+  return fetch(`${BASE}/meals/history${q}`, { headers: authHeaders() });
+}
+
+export async function fetchFavMeals(userId) {
+  return fetch(`${BASE}/users/${userId}/fav-meals`, { headers: authHeaders() });
+}
+
+export async function addFavMeal(userId, meal) {
+  return fetch(`${BASE}/users/${userId}/fav-meals`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify(meal),
+  });
+}
+
+export async function deleteFavMeal(userId, favMealId) {
+  return fetch(`${BASE}/users/${userId}/fav-meals/${favMealId}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+}

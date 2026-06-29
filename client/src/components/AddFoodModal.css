@@ -163,6 +163,43 @@
   margin-top: 2px;
 }
 
+.fav-meals-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fav-meals-label {
+  font-size: 10px;
+  color: #6a6a62;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'DM Mono', monospace;
+}
+
+.fav-meals-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fav-meal-chip {
+  background: rgba(232,255,71,0.08);
+  border: 0.5px solid rgba(232,255,71,0.2);
+  color: #e8ff47;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.fav-meal-chip:hover {
+  background: rgba(232,255,71,0.18);
+}
+
 .modal-add-btn {
   width: 100%;
   background: #e8ff47;

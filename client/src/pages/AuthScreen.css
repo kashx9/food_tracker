@@ -216,6 +216,33 @@
   transition: border-color 0.2s;
 }
 
+.field-input-wrap {
+  position: relative;
+}
+
+.field-input--has-toggle {
+  padding-right: 44px;
+}
+
+.field-eye-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6a6a62;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.field-eye-btn:hover {
+  color: #f0ede6;
+}
+
 .field-input--error {
   border-color: #ff4f4f;
 }

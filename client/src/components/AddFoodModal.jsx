@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./AddFoodModal.css";
 
-export function AddFoodModal({ onAdd, onClose, foods }) {
+export function AddFoodModal({ onAdd, onClose, foods, favMeals = [], onAddMeal }) {
   const [search,   setSearch]   = useState("");
   const [selected, setSelected] = useState(null);
   const [qty,      setQty]      = useState(100);
@@ -31,6 +31,23 @@ export function AddFoodModal({ onAdd, onClose, foods }) {
           <span className="modal-title">Add Food</span>
           <button onClick={onClose} className="modal-close-btn">✕</button>
         </div>
+
+        {favMeals.length > 0 && (
+          <div className="fav-meals-section">
+            <div className="fav-meals-label">Fav Meals</div>
+            <div className="fav-meals-chips">
+              {favMeals.map(meal => (
+                <button
+                  key={meal._id}
+                  className="fav-meal-chip"
+                  onClick={() => { if (onAddMeal) onAddMeal(meal.items); onClose(); }}
+                >
+                  {meal.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <input autoFocus placeholder="Search food..." value={search}
           onChange={e => { setSearch(e.target.value); setSelected(null); }}

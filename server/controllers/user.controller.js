@@ -19,6 +19,51 @@ export const getUser = async(req,res,next)=>{
     }
 }
 
+export const getFavMeals = async(req,res,next)=>{
+    try {
+        const user = await User.findById(req.params.id).select('favMeals')
+        if(!user) return res.status(404).json({ success: false, message: 'User not found' })
+        res.status(200).json({ success: true, data: user.favMeals })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const addFavMeal = async(req,res,next)=>{
+    try {
+        if(req.user._id.toString() !== req.params.id){
+            return res.status(403).json({ success: false, message: 'Forbidden' })
+        }
+        const { name, items } = req.body
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { $push: { favMeals: { name, items } } },
+            { new: true }
+        ).select('favMeals')
+        if(!user) return res.status(404).json({ success: false, message: 'User not found' })
+        res.status(201).json({ success: true, data: user.favMeals })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const deleteFavMeal = async(req,res,next)=>{
+    try {
+        if(req.user._id.toString() !== req.params.id){
+            return res.status(403).json({ success: false, message: 'Forbidden' })
+        }
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { $pull: { favMeals: { _id: req.params.favMealId } } },
+            { new: true }
+        ).select('favMeals')
+        if(!user) return res.status(404).json({ success: false, message: 'User not found' })
+        res.status(200).json({ success: true, data: user.favMeals })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const updateTargets = async(req,res,next)=>{
     try {
         if(req.user._id.toString() !== req.params.id){

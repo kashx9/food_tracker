@@ -1,14 +1,20 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/AuthContext";
-import { NavBar }        from "../components/NavBar";
-import { DonutChart }    from "../components/DonutChart";
-import { MacroBar }      from "../components/MacroBar";
-import { MealSection }   from "../components/MealSection";
-import { AddFoodModal }  from "../components/AddFoodModal";
-import { C, MEAL_SECTIONS } from "../utils/constants";
-import { fetchFoods, fetchMeals, addMeal, deleteMeal } from "../utils/api";
+import { NavBar }             from "../components/NavBar";
+import { DonutChart }         from "../components/DonutChart";
+import { MacroBar }           from "../components/MacroBar";
+import { MealSection }        from "../components/MealSection";
+import { AddFoodModal }       from "../components/AddFoodModal";
+import { CreateMealModal }    from "../components/CreateMealModal";
+import { C, MEAL_SECTIONS }   from "../utils/constants";
+import { fetchFoods, fetchMeals, addMeal, deleteMeal, fetchFavMeals, addFavMeal as apiAddFavMeal } from "../utils/api";
 import "./TrackerDashboard.css";
+
+function localDate() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
 export default function TrackerDashboard() {
   const { userData, logout } = useAuth();
@@ -26,7 +32,9 @@ export default function TrackerDashboard() {
   const [mealsLoading, setMealsLoading] = useState(false);
   const [mealData,     setMealData]     = useState(null);
   const [meals,        setMeals]        = useState({ Breakfast: [], Lunch: [], Dinner: [], Snacks: [], Shakes: [] });
+  const [favMeals,     setFavMeals]     = useState([]);
   const [modal,        setModal]        = useState(null);
+  const [showCreate,   setShowCreate]   = useState(false);
 
   function handleLogout() {
     logout();
@@ -38,6 +46,24 @@ export default function TrackerDashboard() {
     setMealsError(message || "Session expired. Please log in again.");
     logout();
     navigate("/auth?mode=login");
+  }
+
+  function applyMealData(data) {
+    setMeals({
+      Breakfast: data.meals?.Breakfast || [],
+      Lunch:     data.meals?.Lunch     || [],
+      Dinner:    data.meals?.Dinner    || [],
+      Snacks:    data.meals?.Snacks    || [],
+      Shakes:    data.meals?.Shakes    || [],
+    });
+    setMealData(data);
+  }
+
+  async function reloadMeals() {
+    const today = localDate();
+    const res   = await fetchMeals(today);
+    const data  = await res.json();
+    if (res.ok && data.success) applyMealData(data.data);
   }
 
   useEffect(() => {
@@ -64,23 +90,14 @@ export default function TrackerDashboard() {
     async function loadMeals() {
       try {
         setMealsLoading(true);
-        const today = new Date().toISOString().split("T")[0];
+        const today = localDate();
         const res   = await fetchMeals(today);
         const data  = await res.json();
         if (!res.ok) {
           if (res.status === 401 || res.status === 403) return handleAuthFailure();
           throw new Error(data.message || "Failed to fetch meals");
         }
-        if (data.success) {
-          setMeals({
-            Breakfast: data.data.meals?.Breakfast || [],
-            Lunch:     data.data.meals?.Lunch     || [],
-            Dinner:    data.data.meals?.Dinner    || [],
-            Snacks:    data.data.meals?.Snacks    || [],
-            Shakes:    data.data.meals?.Shakes    || [],
-          });
-          setMealData(data.data);
-        }
+        if (data.success) applyMealData(data.data);
       } catch (err) {
         setMealsError(err.message);
       } finally {
@@ -90,9 +107,23 @@ export default function TrackerDashboard() {
     loadMeals();
   }, []);
 
+  useEffect(() => {
+    if (!userData?.userId) return;
+    async function loadFavMeals() {
+      try {
+        const res  = await fetchFavMeals(userData.userId);
+        const data = await res.json();
+        if (res.ok && data.success) setFavMeals(data.data);
+      } catch {
+        /* non-critical, ignore silently */
+      }
+    }
+    loadFavMeals();
+  }, [userData?.userId]);
+
   async function handleAdd(section, item) {
     try {
-      const today = new Date().toISOString().split("T")[0];
+      const today = localDate();
       const res   = await addMeal(today, section, {
         foodId: item.foodId, name: item.name, qty: item.qty, unit: item.unit,
         cal: item.cal, protein: item.protein, carbs: item.carbs, fat: item.fat,
@@ -103,16 +134,35 @@ export default function TrackerDashboard() {
         setMealsError(data.message || "Failed to add meal.");
         return;
       }
-      setMeals({
-        Breakfast: data.data.meals?.Breakfast || [],
-        Lunch:     data.data.meals?.Lunch     || [],
-        Dinner:    data.data.meals?.Dinner    || [],
-        Snacks:    data.data.meals?.Snacks    || [],
-        Shakes:    data.data.meals?.Shakes    || [],
-      });
-      setMealData(data.data);
+      applyMealData(data.data);
     } catch (err) {
       setMealsError(err.message);
+    }
+  }
+
+  async function handleAddMeal(section, items) {
+    try {
+      const today = localDate();
+      for (const item of items) {
+        await addMeal(today, section, {
+          foodId: item.foodId, name: item.name, qty: item.qty, unit: item.unit,
+          cal: item.cal, protein: item.protein, carbs: item.carbs, fat: item.fat,
+        });
+      }
+      await reloadMeals();
+    } catch (err) {
+      setMealsError(err.message);
+    }
+  }
+
+  async function handleSaveFavMeal({ name, items }) {
+    if (!userData?.userId) return;
+    try {
+      const res  = await apiAddFavMeal(userData.userId, { name, items });
+      const data = await res.json();
+      if (res.ok && data.success) setFavMeals(data.data);
+    } catch {
+      /* non-critical, ignore silently */
     }
   }
 
@@ -149,7 +199,8 @@ export default function TrackerDashboard() {
 
       <NavBar
         onLogout={handleLogout}
-        middleSlot={<><button className="active">Tracker</button><button onClick={() => navigate("/profile")}>Profile</button></>}
+        middleSlot={<><button className="active">Tracker</button><button onClick={() => navigate("/dashboard")}>Dashboard</button>
+        <button onClick={() => navigate("/profile")}>Profile</button></>}
         rightSlot={<span className="date-label">{dateLabel}</span>}
       />
 
@@ -180,6 +231,7 @@ export default function TrackerDashboard() {
               items={meals[section]}
               onAddClick={() => setModal(section)}
               onRemove={(i) => handleRemove(section, i)}
+              onCreateClick={() => setShowCreate(true)}
             />
           ))}
         </div>
@@ -216,7 +268,21 @@ export default function TrackerDashboard() {
       </div>
 
       {modal && (
-        <AddFoodModal foods={foods} onAdd={(item) => handleAdd(modal, item)} onClose={() => setModal(null)} />
+        <AddFoodModal
+          foods={foods}
+          favMeals={favMeals}
+          onAdd={(item) => handleAdd(modal, item)}
+          onAddMeal={(items) => handleAddMeal(modal, items)}
+          onClose={() => setModal(null)}
+        />
+      )}
+
+      {showCreate && (
+        <CreateMealModal
+          foods={foods}
+          onSave={handleSaveFavMeal}
+          onClose={() => setShowCreate(false)}
+        />
       )}
     </div>
   );

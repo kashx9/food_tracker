@@ -5,38 +5,10 @@ import { NavBar } from '../components/NavBar';
 import { updateUserTargets } from '../utils/api';
 import './UserProfile.css';
 
-const mockMeals = [
-  {
-    name: "My Oats",
-    category: "Breakfast",
-    ingredients: [
-      { name: "Oats",           quantity: "100g",  calories: "389 kcal", protein: "17g", carbs: "66g", fats: "7g"  },
-      { name: "Chocolate Milk", quantity: "200ml", calories: "148 kcal", protein: "8g",  carbs: "18g", fats: "5g"  },
-    ],
-  },
-  {
-    name: "Mom Ka Bhindi",
-    category: "Lunch",
-    ingredients: [
-      { name: "Bhindi / Lady's Finger", quantity: "150g", calories: "50 kcal", protein: "2g", carbs: "10g", fats: "0g"  },
-      { name: "Mustard Oil",            quantity: "10ml",  calories: "88 kcal", protein: "0g", carbs: "0g",  fats: "10g" },
-    ],
-  },
-  {
-    name: "Gym Shake",
-    category: "Shakes",
-    ingredients: [
-      { name: "Whey Protein", quantity: "30g",      calories: "120 kcal", protein: "24g", carbs: "3g",  fats: "2g" },
-      { name: "Banana",       quantity: "1 medium", calories: "89 kcal",  protein: "1g",  carbs: "23g", fats: "0g" },
-    ],
-  },
-];
-
 export default function UserProfile() {
   const { userData, login: authLogin, logout } = useAuth();
   const navigate = useNavigate();
 
-  const [selected,   setSelected]   = useState("profile");
   const [isEditing,  setIsEditing]  = useState(false);
   const [editValues, setEditValues] = useState({});
   const [editError,  setEditError]  = useState("");
@@ -116,6 +88,7 @@ export default function UserProfile() {
         middleSlot={
           <>
             <button onClick={() => navigate("/tracker")}>Tracker</button>
+            <button onClick={()=> navigate("/dashboard")}>Dashboard</button>
             <button className="active">Profile</button>
           </>
         }
@@ -124,106 +97,55 @@ export default function UserProfile() {
 
       <div className="profile-body">
 
-        <nav className="profile-nav">
-          <button
-            className={`profile-nav-btn${selected === "profile" ? " active" : ""}`}
-            onClick={() => setSelected("profile")}
-          >
-            Profile
-          </button>
-          <button
-            className={`profile-nav-btn${selected === "fav-meals" ? " active" : ""}`}
-            onClick={() => setSelected("fav-meals")}
-          >
-            Fav Meals
-          </button>
-        </nav>
+        <div className="profile-card">
+          <div className="profile-avatar">{initials}</div>
+          <div>
+            <p className="profile-info-name">{name}</p>
+            <p className="profile-info-email">{email}</p>
+          </div>
+        </div>
 
-        <div>
-          {selected === "profile" && (
-            <>
-              <div className="profile-card">
-                <div className="profile-avatar">{initials}</div>
-                <div>
-                  <p className="profile-info-name">{name}</p>
-                  <p className="profile-info-email">{email}</p>
-                </div>
+        <div className="profile-targets-section">
+          <div className="profile-targets-header">
+            <p className="profile-targets-title">Daily Targets</p>
+            {!isEditing && (
+              <button className="profile-edit-btn" onClick={startEditing}>Edit</button>
+            )}
+          </div>
+
+          {isEditing ? (
+            <div className="profile-edit-form">
+              <div className="profile-targets-grid">
+                {targetRows.map(m => (
+                  <div key={m.key} className="profile-target-item">
+                    <label className="profile-target-label" style={{ color: m.color }}>{m.label}</label>
+                    <input
+                      type="number"
+                      value={editValues[m.key] ?? ""}
+                      onChange={e => setEditValues(prev => ({ ...prev, [m.key]: parseInt(e.target.value) || 0 }))}
+                      className="profile-target-input"
+                    />
+                    <span className="profile-target-unit">{m.unit}</span>
+                  </div>
+                ))}
               </div>
-
-              <div className="profile-targets-section">
-                <div className="profile-targets-header">
-                  <p className="profile-targets-title">Daily Targets</p>
-                  {!isEditing && (
-                    <button className="profile-edit-btn" onClick={startEditing}>Edit</button>
-                  )}
-                </div>
-
-                {isEditing ? (
-                  <div className="profile-edit-form">
-                    <div className="profile-targets-grid">
-                      {targetRows.map(m => (
-                        <div key={m.key} className="profile-target-item">
-                          <label className="profile-target-label" style={{ color: m.color }}>{m.label}</label>
-                          <input
-                            type="number"
-                            value={editValues[m.key] ?? ""}
-                            onChange={e => setEditValues(prev => ({ ...prev, [m.key]: parseInt(e.target.value) || 0 }))}
-                            className="profile-target-input"
-                          />
-                          <span className="profile-target-unit">{m.unit}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {editError && <p className="profile-edit-error">{editError}</p>}
-                    <div className="profile-edit-actions">
-                      <button onClick={handleSaveTargets} disabled={saving} className="profile-save-btn">
-                        {saving ? "Saving..." : "Save"}
-                      </button>
-                      <button onClick={() => { setIsEditing(false); setEditError(""); }} className="profile-cancel-btn">
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="profile-targets-grid">
-                    {targetRows.map(m => (
-                      <div key={m.label} className="profile-target-item">
-                        <div className="profile-target-val" style={{ color: m.color }}>{m.val ?? "—"}</div>
-                        <div className="profile-target-unit">{m.unit}</div>
-                        <div className="profile-target-label">{m.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+              {editError && <p className="profile-edit-error">{editError}</p>}
+              <div className="profile-edit-actions">
+                <button onClick={handleSaveTargets} disabled={saving} className="profile-save-btn">
+                  {saving ? "Saving..." : "Save"}
+                </button>
+                <button onClick={() => { setIsEditing(false); setEditError(""); }} className="profile-cancel-btn">
+                  Cancel
+                </button>
               </div>
-            </>
-          )}
-
-          {selected === "fav-meals" && (
-            <div>
-              <h2 className="fav-meals-heading">Favourite Meals</h2>
-              {mockMeals.map((meal) => (
-                <div key={meal.name} className="fav-meal-card">
-                  <div className="fav-meal-header">
-                    <span className="fav-meal-name">{meal.name}</span>
-                    <span className={`fav-meal-category category--${meal.category.toLowerCase()}`}>
-                      {meal.category}
-                    </span>
-                  </div>
-                  {meal.ingredients.map((ing) => (
-                    <div key={ing.name} className="fav-meal-ingredient">
-                      <div className="fav-meal-ingredient-left">
-                        <span className="fav-meal-ingredient-name">{ing.name}</span>
-                        <span className="fav-meal-ingredient-qty">{ing.quantity}</span>
-                      </div>
-                      <div className="fav-meal-ingredient-macros">
-                        <span className="fav-macro-cal">{ing.calories}</span>
-                        <span className="fav-macro-protein">P {ing.protein}</span>
-                        <span className="fav-macro-carbs">C {ing.carbs}</span>
-                        <span className="fav-macro-fat">F {ing.fats}</span>
-                      </div>
-                    </div>
-                  ))}
+            </div>
+          ) : (
+            <div className="profile-targets-grid">
+              {targetRows.map(m => (
+                <div key={m.label} className="profile-target-item">
+                  <div className="profile-target-val" style={{ color: m.color }}>{m.val ?? "—"}</div>
+                  <div className="profile-target-unit">{m.unit}</div>
+                  <div className="profile-target-label">{m.label}</div>
                 </div>
               ))}
             </div>

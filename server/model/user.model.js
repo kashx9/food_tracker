@@ -34,7 +34,20 @@ const userSchema = new mongoose.Schema({
     fat: {
         type: Number,
         min: 0
-    }
+    },
+    favMeals: [{
+        name: { type: String, required: true },
+        items: [{
+            foodId: { type: mongoose.Schema.Types.ObjectId, ref: 'Food' },
+            name:    String,
+            qty:     Number,
+            unit:    String,
+            cal:     Number,
+            protein: Number,
+            carbs:   Number,
+            fat:     Number,
+        }]
+    }]
 },{timestamps: true})
 
 const User = mongoose.model('User', userSchema)

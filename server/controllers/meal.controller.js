@@ -1,5 +1,25 @@
 import MealTracker from "../model/mealTracker.model.js"
 
+export const getMealHistory = async(req, res, next) => {
+    try {
+        const todayStr = req.query.today;
+        const [year, month, day] = todayStr
+            ? todayStr.split('-').map(Number)
+            : [new Date().getUTCFullYear(), new Date().getUTCMonth()+1, new Date().getUTCDate()];
+        const dates = Array.from({ length: 7 }, (_, i) => {
+            const d = new Date(Date.UTC(year, month - 1, day - i));
+            return d.toISOString().split('T')[0];
+        });
+        const meals = await MealTracker.find({
+            userId: req.user._id,
+            date: { $in: dates }
+        }).sort({ date: -1 });
+        res.status(200).json({ success: true, data: meals });
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const getMealById = async(req,res,next) => {
     try {
         const {date} = req.params

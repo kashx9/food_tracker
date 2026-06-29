@@ -4,6 +4,7 @@ import AuthScreen from '../pages/AuthScreen';
 import HealthMetricsPage from '../pages/HealthMetricsPage';
 import TrackerDashboard from '../pages/TrackerDashboard';
 import UserProfile from '../pages/UserProfile';
+import Dashboard from '../pages/UserDashboard';
 import ProtectedRoute from './ProtectedRoute';
 
 export const router = createBrowserRouter([
@@ -38,6 +39,14 @@ export const router = createBrowserRouter([
         <UserProfile />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute>
+        <Dashboard/>
+      </ProtectedRoute>
+    )
   },
   {
     path: "*",
