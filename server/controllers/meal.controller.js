@@ -24,15 +24,9 @@ export const getMealById = async(req,res,next) => {
     try {
         const {date} = req.params
         const meal = await MealTracker.findOne({userId: req.user._id, date})
-        if(!meal) {
-            return res.status(404).json({
-                success: false,
-                message: 'Meal not found for the given user and date'
-            })
-        }
         res.status(200).json({
             success: true,
-            data: meal
+            data: meal || { meals: { Breakfast: [], Lunch: [], Dinner: [], Snacks: [], Shakes: [] } }
         })
     } catch (error) {
         next(error)

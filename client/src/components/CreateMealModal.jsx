@@ -8,6 +8,7 @@ export function CreateMealModal({ onClose, onSave, foods }) {
   const [selected, setSelected] = useState(null);
   const [qty,      setQty]      = useState(100);
   const [saving,   setSaving]   = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   const filtered   = foods.filter(f => f.name.toLowerCase().includes(search.toLowerCase()));
   const food       = selected ? foods.find(f => f.name === selected) : null;
@@ -31,9 +32,15 @@ export function CreateMealModal({ onClose, onSave, foods }) {
   async function handleSave() {
     if (!mealName.trim() || items.length === 0) return;
     setSaving(true);
-    await onSave({ name: mealName.trim(), items });
-    setSaving(false);
-    onClose();
+    setSaveError("");
+    try {
+      await onSave({ name: mealName.trim(), items });
+      onClose();
+    } catch {
+      setSaveError("Failed to save. Check your connection and try again.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   const totalCal = Math.round(items.reduce((a, i) => a + i.cal, 0));
@@ -131,6 +138,9 @@ export function CreateMealModal({ onClose, onSave, foods }) {
           )}
         </div>
 
+        {saveError && (
+          <p style={{ color: "#ef4444", fontSize: "12px", margin: 0 }}>{saveError}</p>
+        )}
         <button
           onClick={handleSave}
           disabled={!mealName.trim() || items.length === 0 || saving}

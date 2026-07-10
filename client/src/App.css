@@ -1,9 +1,15 @@
 /* App.css - Converted from inline styles */
 
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .page {
   font-family: 'DM Sans', sans-serif;
   background: #0d0d0d;
-  color: #f0ede6;
+  color: #aeaeae;
   min-height: 100vh;
   overflow-x: hidden;
 }

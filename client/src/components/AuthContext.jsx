@@ -6,17 +6,17 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [userData, setUserData] = useState(() => {
     const savedUser = localStorage.getItem("user");
-    const token     = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (!savedUser || !token) return null;
     const user = JSON.parse(savedUser);
     return {
-      userId:    user.userId,
-      userName:  user.name || user.userName || "User",
-      email:     user.email,
+      userId: user.userId,
+      userName: user.name || user.userName || "User",
+      email: user.email,
       targetCal: user.calories,
-      protein:   user.protein,
-      carbs:     user.carbs,
-      fat:       user.fat,
+      protein: user.protein,
+      carbs: user.carbs,
+      fat: user.fat,
     };
   });
 

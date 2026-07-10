@@ -156,14 +156,11 @@ export default function TrackerDashboard() {
   }
 
   async function handleSaveFavMeal({ name, items }) {
-    if (!userData?.userId) return;
-    try {
-      const res  = await apiAddFavMeal(userData.userId, { name, items });
-      const data = await res.json();
-      if (res.ok && data.success) setFavMeals(data.data);
-    } catch {
-      /* non-critical, ignore silently */
-    }
+    if (!userData?.userId) throw new Error("Not logged in");
+    const res  = await apiAddFavMeal(userData.userId, { name, items });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to save");
+    setFavMeals(data.data);
   }
 
   async function handleRemove(section, index) {

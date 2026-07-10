@@ -68,4 +68,15 @@ describe('Auth API', () => {
 
     expect(res.status).toBe(401)
   })
+
+  it('should return 429 after exceeding rate limit', async () => {
+    const payload = { email: 'spam@example.com', password: 'wrong' }
+    const responses = await Promise.all(
+      Array.from({ length: 6 }, () =>
+        request(app).post('/api/v1/auth/login').send(payload)
+      )
+    )
+    const statuses = responses.map(r => r.status)
+    expect(statuses).toContain(429)
+  })
 })

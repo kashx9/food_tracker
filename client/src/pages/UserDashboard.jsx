@@ -6,7 +6,7 @@ import { fetchMealHistory, fetchFavMeals, deleteFavMeal } from "../utils/api";
 
 function localDate() {
   const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 import "./UserDashboard.css";
 
@@ -17,9 +17,9 @@ function DayCard({ entry }) {
 
   const allItems = SECTIONS.flatMap(s => entry.meals?.[s] || []);
   const totalCal = Math.round(allItems.reduce((a, i) => a + i.cal, 0));
-  const totalP   = Math.round(allItems.reduce((a, i) => a + i.protein, 0));
-  const totalC   = Math.round(allItems.reduce((a, i) => a + i.carbs, 0));
-  const totalF   = Math.round(allItems.reduce((a, i) => a + i.fat, 0));
+  const totalP = Math.round(allItems.reduce((a, i) => a + i.protein, 0));
+  const totalC = Math.round(allItems.reduce((a, i) => a + i.carbs, 0));
+  const totalF = Math.round(allItems.reduce((a, i) => a + i.fat, 0));
 
   const dateStr = new Date(entry.date + "T00:00:00").toLocaleDateString("en-IN", {
     weekday: "short", day: "numeric", month: "short",
@@ -126,11 +126,11 @@ export default function Dashboard() {
   const { userData, logout } = useAuth();
   const navigate = useNavigate();
 
-  const [tab,         setTab]         = useState("history");
-  const [history,     setHistory]     = useState([]);
-  const [favMeals,    setFavMeals]    = useState([]);
+  const [tab, setTab] = useState("history");
+  const [history, setHistory] = useState([]);
+  const [favMeals, setFavMeals] = useState([]);
   const [histLoading, setHistLoading] = useState(true);
-  const [favLoading,  setFavLoading]  = useState(true);
+  const [favLoading, setFavLoading] = useState(false);
 
   const dateLabel = new Date().toLocaleDateString("en-IN", {
     weekday: "short", day: "numeric", month: "short",
@@ -144,7 +144,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function load() {
       try {
-        const res  = await fetchMealHistory(localDate());
+        const res = await fetchMealHistory(localDate());
         const data = await res.json();
         if (res.ok && data.success) setHistory(data.data);
       } catch {
@@ -159,8 +159,9 @@ export default function Dashboard() {
   useEffect(() => {
     if (!userData?.userId) return;
     async function load() {
+      setFavLoading(true);
       try {
-        const res  = await fetchFavMeals(userData.userId);
+        const res = await fetchFavMeals(userData.userId);
         const data = await res.json();
         if (res.ok && data.success) setFavMeals(data.data);
       } catch {
@@ -175,7 +176,7 @@ export default function Dashboard() {
   async function handleDeleteFav(favMealId) {
     if (!userData?.userId) return;
     try {
-      const res  = await deleteFavMeal(userData.userId, favMealId);
+      const res = await deleteFavMeal(userData.userId, favMealId);
       const data = await res.json();
       if (res.ok && data.success) setFavMeals(data.data);
     } catch {
@@ -211,6 +212,12 @@ export default function Dashboard() {
           >
             Fav Meals
           </button>
+          <button
+            className={`profile-nav-btn${tab === "report" ? " active" : ""}`}
+            onClick={() => setTab("report")}
+          >
+            Report
+          </button>
         </nav>
 
         <div className="dashboard-content">
@@ -237,6 +244,16 @@ export default function Dashboard() {
               {favMeals.map(meal => (
                 <FavMealCard key={meal._id} meal={meal} onDelete={handleDeleteFav} />
               ))}
+            </>
+          )}
+
+          {tab === "report" && (
+            <>
+              <h2 className="dashboard-section-title">Last 7 Days Report</h2>
+              {favLoading && <p className="dashboard-empty">Loading…</p>}
+              {!favLoading &&(
+                <p className="dashboard-empty">No report generated yet. Complete your meals for the last 7 days to generate a report.</p>
+              )}
             </>
           )}
         </div>
