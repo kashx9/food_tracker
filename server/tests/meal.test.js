@@ -1,27 +1,39 @@
 import request from 'supertest'
+import mongoose from 'mongoose'
 import app from '../server.js'
 
 describe('Meal API', () => {
+  jest.setTimeout(10000)
   let token
   let mealId
   let itemId
 
   beforeAll(async () => {
-    // Signup and login to get token
-    await request(app)
+    // Signup and login to get token with unique email
+    const uniqueMealEmail = `mealtest${Date.now()}@example.com`
+    
+    const signupRes = await request(app)
       .post('/api/v1/auth/register')
       .send({
         name: 'Meal Test User',
-        email: 'mealtest@example.com',
+        email: uniqueMealEmail,
         password: 'password123'
       })
+
+    if (signupRes.status !== 201) {
+      throw new Error(`Signup failed: ${signupRes.status} - ${JSON.stringify(signupRes.body)}`)
+    }
 
     const loginRes = await request(app)
       .post('/api/v1/auth/login')
       .send({
-        email: 'mealtest@example.com',
+        email: uniqueMealEmail,
         password: 'password123'
       })
+
+    if (!loginRes.body.data || !loginRes.body.data.token) {
+      throw new Error(`Login failed: ${loginRes.status} - ${JSON.stringify(loginRes.body)}`)
+    }
 
     token = loginRes.body.data.token
   })
@@ -113,5 +125,9 @@ describe('Meal API', () => {
 
     expect(res.status).toBe(400)
     expect(res.body.success).toBe(false)
+  })
+
+  afterAll(async () => {
+    await mongoose.connection.close()
   })
 })

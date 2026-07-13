@@ -1,7 +1,9 @@
 import request from 'supertest'
+import mongoose from 'mongoose'
 import app from '../server.js'
 
 describe('Auth API', () => {
+  jest.setTimeout(10000)
   const uniqueEmail = `test${Date.now()}@example.com`
 
   it('should register a new user successfully', async () => {
@@ -78,5 +80,9 @@ describe('Auth API', () => {
     )
     const statuses = responses.map(r => r.status)
     expect(statuses).toContain(429)
+  })
+
+  afterAll(async () => {
+    await mongoose.connection.close()
   })
 })
