@@ -30,9 +30,6 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           JWT_EXPIRES_IN: 7d
           CLIENT_URL: http://localhost:3000
-        env: 
-          DB_URI: ${{secrets.DB_URI}}
-          JWT_SECRET: ${{secrets.JWT_SECRET}}
       
   deploy:
     needs: test
